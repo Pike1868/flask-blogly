@@ -25,7 +25,8 @@ class User(db.Model):
                           default=DEFAULT_IMAGE_URL)
 
 
-@property
-def get_full_name():
-    """Get full name of user"""
-    firstname = Users.query.all()
+    @property
+    def get_full_name(self):
+        """Get full name of user"""
+
+        return f"{self.first_name} {self.last_name}"

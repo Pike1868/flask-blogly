@@ -1,0 +1,24 @@
+input {
+  display: block;
+  margin: 5px 0;
+}
+
+button {
+  font-weight: 500;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.user_image {
+  max-height: 250px;
+  max-width: 250px;
+}
+
+.user_info_container {
+  display: flex;
+}
+
+.user_btn_group {
+  display: flex;
+}
