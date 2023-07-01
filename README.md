@@ -56,4 +56,19 @@ The application includes the following routes:
 Testing
 -------
 
-- Still working on tests :/
+The application includes unit tests for both the models and the routes. These tests ensure the correct functioning of the User model and the CRUD operations implemented in the routes.
+
+In the `ModelsTests` class:
+
+-   `test_create_user`: This test ensures that a user can be created and saved in the database.
+-   `test_delete_user`: This test ensures that a user can be deleted from the database.
+-   `test_full_name`: This test ensures the correct functionality of the `get_full_name` method of the User model.
+
+In the `RouteTests` class:
+
+-   `test_home_page`: This test ensures that the home page can be retrieved and contains the correct HTML.
+-   `test_users_form`: This test ensures that the form for adding a new user can be retrieved and contains the correct HTML.
+-   `test_show_user`: This test ensures that the page for a specific user can be retrieved and contains the correct HTML.
+-   `test_add_user`: This test ensures that a new user can be added through the web interface.
+-   `test_edit_user`: This test ensures that an existing user's information can be edited through the web interface.
+-   `test_delete_user`: This test ensures that an existing user can be deleted through the web interface.
