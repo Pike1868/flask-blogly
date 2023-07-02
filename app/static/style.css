@@ -3,12 +3,13 @@ input {
   margin: 5px 0;
 }
 
-button {
+button, .btn {
   font-weight: 500;
   border: 1px solid black;
   border-radius: 5px;
   padding: 5px 10px;
 }
+
 
 .user_image {
   max-height: 250px;
