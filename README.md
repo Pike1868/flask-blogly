@@ -44,14 +44,26 @@ Routes
 
 The application includes the following routes:
 
--   GET /: Redirect to list of users.
--   GET /users: Show all users with links to their details and an add-user form.
--   GET /users/new: Show an add form for users.
--   POST /users/new: Process the add form, adding a new user and redirecting to /users.
--   GET /users/[user-id]: Show information about a given user with options to edit or delete the user.
--   GET /users/[user-id]/edit: Show the edit page for a user with options to save or cancel.
--   POST /users/[user-id]/edit: Process the edit form, updating the user and redirecting to /users.
--   POST /users/[user-id]/delete: Delete the user and redirect to /users.
+### Users
+
+-   `GET /`: Redirect to a list of recent posts.
+-   `GET /users`: Show all users with links to their details.
+-   `GET /users/new`: Show a form to add a new user.
+-   `POST /users/new`: Process the add form, adding a new user and redirecting to `/users`.
+-   `GET /users/[user-id]`: Show information about a given user with options to edit or delete the user and a list of the user's posts.
+-   `GET /users/[user-id]/edit`: Show the edit page for a user with options to save or cancel.
+-   `POST /users/[user-id]/edit`: Process the edit form, updating the user and redirecting to `/users`.
+-   `POST /users/[user-id]/delete`: Delete the user and redirect to `/users`.
+
+### Posts
+
+-   `GET /users/[user-id]/posts/new`: Show a form to add a new post for a specific user.
+-   `POST /users/[user-id]/posts/new`: Process the add form, add a new post and redirect to the user's detail page.
+-   `GET /posts/[post-id]`: Show details about a single post.
+-   `GET /posts/[post-id]/edit`: Show a form to edit a specific post.
+-   `POST /posts/[post-id]/edit`: Handle editing of a post and redirect back to post detail view.
+-   `POST /posts/[post-id]/delete`: Delete a post and redirect to the user's detail page.
+
 
 Testing
 -------

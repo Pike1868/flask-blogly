@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, render_template, redirect, request, flash
 from .models import User, Post, db
 
 # Create a Blueprint
@@ -7,8 +7,11 @@ main = Blueprint('main', __name__)
 
 @main.route("/")
 def index():
-    """Show list of users"""
-    return redirect("/users")
+    """Show list of most recent posts"""
+    posts = Post.query.order_by(Post.created_at.desc()).all()
+    
+    return render_template("index.html", posts=posts)
+
 
 
 user = Blueprint('user', __name__)
@@ -19,7 +22,7 @@ def show_user_directory():
     """Show a list of all users"""
     users = User.query.all()
 
-    return render_template("index.html", users=users)
+    return render_template("users.html", users=users)
 
 
 @user.route("/users/new")
@@ -109,11 +112,39 @@ def show_post(post_id):
     post = Post.query.get_or_404(post_id)
     user = User.query.get_or_404(post.user_id)
 
-    return render_template("posts/details.html", user=user, post=post)
+    return render_template("/posts/details.html", user=user, post=post)
 
-# to-do: add GET route for showing edit post form: "/posts/[post_id]/edit"
 
-# to-do: add POST route for editing post in DB: "/posts/[post_id]/edit"
+@post.route("/posts/<int:post_id>/edit")
+def edit_post_form(post_id):
+    """Show form to edit a post"""
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(post.user_id)
+
+    return render_template("/posts/edit.html", user=user, post=post)
+
+
+@post.route("/posts/<int:post_id>/edit", methods=["POST"])
+def edit_post(post_id):
+    """Handle editing of a post, redirect back to post detail view."""
+    post = Post.query.get_or_404(post_id)
+
+    post.title = request.form["post_title"]
+    post.content = request.form["post_content"]
+
+    db.session.commit()
+
+    return redirect(f"/posts/{post_id}")
+
 
 # to-do: add POST route for deleting a post: "/posts/[post_id]/delete"
+@post.route("/posts/<int:post_id>/delete", methods=["POST"])
+def delete_post(post_id):
+    """Delete a post from posts database"""
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(post.user_id)
 
+    Post.query.filter_by(id=post_id).delete()
+    db.session.commit()
+
+    return redirect(f"/users/{user.id}")

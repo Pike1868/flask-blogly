@@ -3,13 +3,21 @@ input {
   margin: 5px 0;
 }
 
-button, .btn {
+button,
+.btn {
   font-weight: 500;
   border: 1px solid black;
   border-radius: 5px;
   padding: 5px 10px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
+#home_btn {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
 
 .user_image {
   max-height: 250px;
@@ -22,4 +30,33 @@ button, .btn {
 
 .user_btn_group {
   display: flex;
+}
+
+.post_btn_group,
+.post_btn_group form button {
+  margin-top: 10px;
+}
+
+.flash_msg {
+  max-width: 50%;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ff6347;
+  color: #fff;
+}
+
+.container {
+  margin: 20px 0;
+  max-width: 80%;
+}
+
+.post_details {
+  list-style: none;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: #e2e2e2;
+  padding: 10px;
+  margin: 20px;
+  max-width: 60%;
 }

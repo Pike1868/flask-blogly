@@ -39,12 +39,14 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(50), nullable=False)
-    content = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
     created_at = db.Column(
         db.DateTime,
         nullable=False,
         default=datetime.datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user = db.relationship("User", backref="posts")
 
     @property
     def friendly_date(self):

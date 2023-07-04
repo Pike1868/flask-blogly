@@ -33,7 +33,20 @@ class RouteTests(TestCase):
 
     def test_home_page(self):
         """
-        Test whether the home page and list of users appears
+        Test whether the home page and list of recent posts appears
+        """
+        resp = self.client.get('/')
+        html = resp.get_data(as_text=True)
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn('<h1>Blogly Recent Posts</h1>', html)
+        self.assertIn('ul', html)
+        self.assertIn('action="/users"', html)
+        self.assertIn('method="get',html)
+
+    def test_users_page(self):
+        """
+        Test whether the list of users appears on /users route
         """
         resp = self.client.get('/users')
         html = resp.get_data(as_text=True)
@@ -51,7 +64,7 @@ class RouteTests(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertIn('action="/users/new"', html)
-        self.assertIn('method="post"', html)
+        self.assertIn('method="POST"', html)
         self.assertIn('id="first_name_input"', html)
         self.assertIn('id="last_name_input"', html)
         self.assertIn('id="image_url_input"', html)

@@ -5,14 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
-    <title>{% block title%}Blogly App:{% endblock %}</title>
+    <title>{% block title%}Blogly App{% endblock %}</title>
 </head>
 
 <body>
+    <ul>
+        {% for message in get_flashed_messages()%}
+        <li class="flash_msg">{{message}}</li>
+        {% endfor %}
+    </ul>
     {% block content%}
 
     {% endblock %}
-
+    <br>
+    <a href="/" class="btn" id="home_btn">Back Home</a>
 </body>
 
 </html>
