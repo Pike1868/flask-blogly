@@ -5,10 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     <title>{% block title%}Blogly App{% endblock %}</title>
 </head>
 
-<body>
+<body class="container-fluid">
+
+    <nav class="navbar navbar-dark bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename = 'images/blogger.svg') }}" alt="" width="30" height="24"
+                    class="d-inline-block align-text-top">
+                Blogly
+            </a>
+        </div>
+    </nav>
+
     <ul>
         {% for message in get_flashed_messages()%}
         <li class="flash_msg">{{message}}</li>
@@ -19,6 +33,10 @@
     {% endblock %}
     <br>
     <a href="/" class="btn" id="home_btn">Back Home</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
