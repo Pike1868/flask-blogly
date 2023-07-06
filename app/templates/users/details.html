@@ -2,33 +2,36 @@
 {% block title %}User Listing{% endblock %}
 {% block content%}
 
-<div class="user_info_container">
-    <img src="{{user.image_url}}" alt="" srcset="" class="user_image">
+<div class="user_info_container d-flex align-items-start mb-4">
+    <img src="{{user.image_url}}" alt="User Image" class="user_image img-fluid m-4" style="max-width: 150px;">
     <div class="user_details">
         <h1>{{user.get_full_name}}</h1>
-        <div class="user_btn_group">
-            <form action="/users/{{user.id}}/edit" method="get">
-                <button>Edit</button>
+        <div class="user_btn_group mb-2">
+            <form action="/users/{{user.id}}/edit" method="get" class="d-inline-block mr-2">
+                <button class="btn btn-primary">Edit</button>
             </form>
-            <form action="/users/{{user.id}}/delete" method="post">
-                <button>Delete</button>
+            <form action="/users/{{user.id}}/delete" method="post" class="d-inline-block">
+                <button class="btn btn-danger">Delete</button>
             </form>
         </div>
         <div class="user_posts">
             <h2>Posts</h2>
-            <ul>
+            <ul class="list-unstyled">
                 {% for post in posts %}
                 <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
-
                 {% endfor %}
             </ul>
-            <form action="/users/{{user.id}}/posts/new" method="GET">
-                <button>Add Post</button>
+            <form action="/users/{{user.id}}/posts/new" method="GET" class="mt-2">
+                <button class="btn btn-success">Add Post</button>
+            </form>
+        </div>
+        <div class="my-3">
+            <form action="/tags/new" method="GET" class="mt-2">
+                <button class="btn btn-success">Add Tag</button>
             </form>
         </div>
     </div>
 
 </div>
-
 
 {% endblock %}

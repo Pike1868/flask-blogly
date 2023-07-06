@@ -2,7 +2,7 @@
 from flask import Flask
 from .models import db, connect_db
 from .config import Config
-from .routes import main, user, post
+from .routes import main, user, post, tag
 # from flask_debugtoolbar import DebugToolbarExtension
 
 
@@ -19,6 +19,7 @@ def create_app(config_name):
     app.register_blueprint(main)
     app.register_blueprint(user)
     app.register_blueprint(post)
+    app.register_blueprint(tag)
 
     with app.app_context():
         from . import routes

@@ -1,15 +1,15 @@
 {% extends "base.html" %}
+
 {% block title %}User Listing{% endblock %}
-{% block content%}
-<h1>All Users</h1>
-<ul>
+
+{% block content %}
+<h1 class="my-3">All Users</h1>
+<ul class="list-unstyled">
     {% for user in users %}
-    <li><a href="/users/{{user.id}}">{{user.get_full_name}}</a></li>
+    <li class="my-2"><a href="/users/{{user.id}}">{{user.get_full_name}}</a></li>
     {% endfor %}
 </ul>
-<form action="/users/new" method="get">
-    <button>Add user</button>
+<form action="/users/new" method="get" class="text-center my-3">
+    <button class="btn btn-primary">Add User</button>
 </form>
-
-
 {% endblock %}

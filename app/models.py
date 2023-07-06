@@ -14,7 +14,7 @@ def connect_db(app):
 
 class User(db.Model):
     """Users table, will have id[PK], first_name, last_name, and image_url columns"""
-    
+
     __tablename__ = 'users'
 
     id = db.Column(db.Integer,
@@ -48,9 +48,8 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     user = db.relationship("User", backref="user_posts")
-
-    tags = db.relationship('Tag', secondary='post_tags')
-
+    tags = db.relationship('Tag', secondary='post_tags',
+                           back_populates='posts')
 
     @property
     def friendly_date(self):
@@ -61,16 +60,19 @@ class Post(db.Model):
 
 class Tag(db.Model):
     """Tag table, will have an id[PK] and a unique name"""
-    
+
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-    posts = db.relationship('Post', secondary='post_tags', backref='tags')
+    posts = db.relationship(
+        'Post', secondary='post_tags', back_populates='tags')
+
+
 class PostTag(db.Model):
     """Table to join Post and Tag tables, will have [FK]s for both the post_id and the tag_id, composite [PK]"""
-    
+
     __tablename__ = 'post_tags'
 
     post_id = db.Column(db.Integer, db.ForeignKey(

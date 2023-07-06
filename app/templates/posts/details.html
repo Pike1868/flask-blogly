@@ -1,18 +1,22 @@
 {% extends "base.html" %}
+
 {% block title %}Post Detail Page{% endblock %}
-{% block content%}
-<div class="post_details">
-    <h2>{{post.title}}</h2>
-    <p>{{post.content}}</p>
-    <span>By <i>{{user.get_full_name}}</i></span>
+
+{% block content %}
+<div class="container">
+    <h2 class="my-3">{{ post.title }}</h2>
+    <p class="p-2">{{ post.content }}</p>
+    <span>By <i>{{ user.get_full_name }}</i></span>
 </div>
 
-<div class="post_btn_group">
-    <a href="/users/{{user.id}}" class="btn">Cancel</a>
-    <a href="/posts/{{post.id}}/edit" class="btn">Edit</a>
-    <form action="/posts/{{post.id}}/delete" method="POST">
-        <button type="submit" class="btn">Delete</button>
+<div class="mt-5">
+    <a href="/users/{{ user.id }}" class="btn btn-warning m-1">Cancel</a>
+    <a href="/posts/{{ post.id }}/edit" class="btn btn-success m-1">Edit</a>
+    <form action="/posts/{{ post.id }}/delete" method="POST" class="d-inline-block">
+        <button type="submit" class="btn btn-danger m-1">Delete</button>
     </form>
 </div>
 
+
 {% endblock %}
+

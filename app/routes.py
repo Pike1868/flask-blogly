@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, flash
-from .models import User, Post, db
+from .models import User, Post, Tag, PostTag, db
 
-# Create a Blueprint
 main = Blueprint('main', __name__)
 
 
@@ -9,11 +8,11 @@ main = Blueprint('main', __name__)
 def index():
     """Show list of most recent posts"""
     posts = Post.query.order_by(Post.created_at.desc()).all()
-    
+
     return render_template("index.html", posts=posts)
 
 
-
+# ===============USER ROUTES==================
 user = Blueprint('user', __name__)
 
 
@@ -82,6 +81,7 @@ def delete_user(user_id):
     return redirect("/users")
 
 
+# ===================POST ROUTES===================
 post = Blueprint('post', __name__)
 
 
@@ -137,7 +137,6 @@ def edit_post(post_id):
     return redirect(f"/posts/{post_id}")
 
 
-# to-do: add POST route for deleting a post: "/posts/[post_id]/delete"
 @post.route("/posts/<int:post_id>/delete", methods=["POST"])
 def delete_post(post_id):
     """Delete a post from posts database"""
@@ -148,3 +147,71 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f"/users/{user.id}")
+
+# ==============TAG ROUTES====================
+tag = Blueprint('tag', __name__)
+
+
+@tag.route("/tags")
+def show_all_tags():
+    """Lists all tags with links to each tag's detail page"""
+    tags = Tag.query.all()
+
+    return render_template("/tags/alltags.html", tags=tags)
+
+
+@tag.route("/tags/<int:tag_id>")
+def show_tag_details(tag_id):
+    """Show tag's detail page"""
+    tag = Tag.query.get(tag_id)
+    tagged_posts = tag.posts
+
+    return render_template("/tags/details.html", tag=tag, tagged_posts=tagged_posts)
+
+
+@tag.route("/tags/new")
+def show_create_tag_form():
+    """Show a form to create a tag"""
+    return render_template("/tags/new.html")
+
+
+@tag.route("/tags/new", methods=["POST"])
+def create_tag():
+    """Create a tag, add to Tag table"""
+    new_tag = Tag(name=request.form["tag_name"])
+    db.session.add(new_tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
+@tag.route("/tags/<int:tag_id>/edit")
+def show_edit_tag_form(tag_id):
+    """Show a form to edit a tag"""
+
+    tag = Tag.query.get_or_404(tag_id)
+
+    return render_template("/tags/edit.html", tag=tag)
+
+
+@tag.route("/tags/<int:tag_id>/edit", methods=["POST"])
+def edit_tag(tag_id):
+    """Process edit form, update tag in db, redirect to tag list"""
+    tag = Tag.query.get_or_404(tag_id)
+    tag.name = request.form["tag_name"]
+
+    db.session.commit()
+    return redirect("/tags")
+
+# 7. To-do: POST route /tags/[tag-id]/delete = Delete a tag
+
+
+@tag.route("/tags/<int:tag_id>/delete", methods=["POST"])
+def delete_tag(tag_id):
+    """Delete tag, update db"""
+    Tag.query.filter_by(id=tag_id).delete()
+
+    db.session.commit()
+    return redirect("/tags")
+
+

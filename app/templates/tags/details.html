@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Tag Detail Page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-3">{{ tag.name }}</h2>
+    <div class="tag_btn_group">
+        <form action="/tags/{{tag.id}}/edit"><button type="submit" class="btn btn-success">Edit</button></form>
+        <form action="/tags/{{tag.id}}/delete" method="POST"><button type="submit"
+                class="btn btn-danger">Delete</button></form>
+    </div>
+
+</div>
+
+{% endblock %}
