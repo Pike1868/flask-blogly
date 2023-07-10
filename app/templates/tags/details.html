@@ -5,12 +5,26 @@
 {% block content %}
 <div class="container">
     <h2 class="my-3">{{ tag.name }}</h2>
+    <ul>
+        {% if tagged_posts %}
+        <!-- Display posts associated with the tag -->
+        {% for post in tagged_posts %}
+        <li>
+            <a href="/posts/{{ post.id }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+        {% else %}
+        <!-- Display message if there are no posts associated with the tag -->
+        <p>No posts associated with this tag.</p>
+        {% endif %}
+    </ul>
     <div class="tag_btn_group">
-        <form action="/tags/{{tag.id}}/edit"><button type="submit" class="btn btn-success">Edit</button></form>
-        <form action="/tags/{{tag.id}}/delete" method="POST"><button type="submit"
-                class="btn btn-danger">Delete</button></form>
+        <form action="/tags/{{tag.id}}/edit">
+            <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+        <form action="/tags/{{tag.id}}/delete" method="POST">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
     </div>
-
 </div>
-
 {% endblock %}

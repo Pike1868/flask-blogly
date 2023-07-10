@@ -18,3 +18,12 @@ body {
 footer {
   height: 60px;
 }
+
+textarea {
+  max-width: 50%;
+  max-height: 100px;
+}
+
+#post_title_input {
+  max-width: 50%;
+}

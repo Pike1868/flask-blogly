@@ -3,7 +3,7 @@ from flask import Flask
 from .models import db, connect_db
 from .config import Config
 from .routes import main, user, post, tag
-# from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 def create_app(config_name):
@@ -11,7 +11,7 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(f"app.config.{config_name}")
 
-    # toolbar = DebugToolbarExtension(app)
+    toolbar = DebugToolbarExtension(app)
 
     connect_db(app)
     db.init_app(app)

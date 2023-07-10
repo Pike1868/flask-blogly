@@ -2,8 +2,8 @@
 {% block title %}Edit Tag Form{% endblock %}
 {% block content%}
 <h1>Edit a Tag</h1>
-<form action="/tags/{{ tag.id }}/edit" method="POST">
-    <input type="text" name="tag_name" required>
+<form action="/tags/{{tag.id}}/edit" method="POST">
+    <input type="text" name="tag_name" placeholder="{{tag.name}}" required>
     <button type="submit" class="btn btn-success">Edit</button>
 </form>
 

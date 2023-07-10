@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, flash
 from .models import User, Post, Tag, PostTag, db
+from sqlalchemy.exc import SQLAlchemyError
 
 main = Blueprint('main', __name__)
 
@@ -25,17 +26,9 @@ def show_user_directory():
 
 
 @user.route("/users/new")
-def create_user_form():
+def show_create_user_form():
     """Show form to add a user"""
     return render_template("users/new.html")
-
-
-@user.route("/users/<int:user_id>")
-def show_user(user_id):
-    """Show details about a single user"""
-    user = User.query.get_or_404(user_id)
-    posts = Post.query.filter_by(user_id=user.id)
-    return render_template("users/details.html", user=user, posts=posts)
 
 
 @user.route("/users/new", methods=["POST"])
@@ -50,6 +43,14 @@ def add_user():
     db.session.add(new_user)
     db.session.commit()
     return redirect("/users")
+
+
+@user.route("/users/<int:user_id>")
+def show_user(user_id):
+    """Show details about a single user"""
+    user = User.query.get_or_404(user_id)
+    posts = Post.query.filter_by(user_id=user.id)
+    return render_template("users/details.html", user=user, posts=posts)
 
 
 @user.route("/users/<int:user_id>/edit", methods=["GET"])
@@ -81,7 +82,7 @@ def delete_user(user_id):
     return redirect("/users")
 
 
-# ===================POST ROUTES===================
+# ===================POSTS ROUTES===================
 post = Blueprint('post', __name__)
 
 
@@ -89,19 +90,34 @@ post = Blueprint('post', __name__)
 def show_post_form(user_id):
     """Show a form to add a post for that user"""
     user = User.query.get_or_404(user_id)
-    return render_template("posts/new.html", user=user)
+    tags = Tag.query.all()
+    return render_template("posts/new.html", user=user, tags=tags)
 
 
 @post.route("/users/<int:user_id>/posts/new", methods=["POST"])
 def add_new_post(user_id):
     """Handle add form, add post and redirect to user's details page"""
     user = User.query.get_or_404(user_id)
-
+    print(f"THIS SHOULD BE THE USER ID: {user.id}")
     new_post = Post(title=request.form["post_title"],
                     content=request.form["post_content"], user_id=user.id)
 
-    db.session.add(new_post)
-    db.session.commit()
+    try:
+        db.session.add(new_post)
+        db.session.flush()  # make sure new_post has an ID before committing
+
+        tags = request.form.getlist("tag")
+        print(tags)
+
+        for tag in tags:
+            tag = Tag.query.filter_by(name=tag).first()
+            new_post_tag = PostTag(post_id=new_post.id, tag_id=int(tag.id))
+            db.session.add(new_post_tag)
+
+        db.session.commit()
+    except SQLAlchemyError as e:
+        print(str(e))
+        db.session.rollback()
 
     return redirect(f"/users/{user.id}")
 
@@ -111,8 +127,9 @@ def show_post(post_id):
     """Show details about a single post"""
     post = Post.query.get_or_404(post_id)
     user = User.query.get_or_404(post.user_id)
+    tags = post.tags
 
-    return render_template("/posts/details.html", user=user, post=post)
+    return render_template("/posts/details.html", user=user, post=post, tags=tags)
 
 
 @post.route("/posts/<int:post_id>/edit")
@@ -120,8 +137,9 @@ def edit_post_form(post_id):
     """Show form to edit a post"""
     post = Post.query.get_or_404(post_id)
     user = User.query.get_or_404(post.user_id)
+    tags = Tag.query.all()
 
-    return render_template("/posts/edit.html", user=user, post=post)
+    return render_template("/posts/edit.html", user=user, post=post, tags=tags)
 
 
 @post.route("/posts/<int:post_id>/edit", methods=["POST"])
@@ -131,6 +149,17 @@ def edit_post(post_id):
 
     post.title = request.form["post_title"]
     post.content = request.form["post_content"]
+
+    tag_names = request.form.getlist("tags")
+    print(tag_names)
+
+    tags = Tag.query.filter(Tag.name.in_(tag_names)).all()
+    post.tags = tags
+
+    print("++++++++++++++++++++++++++++++++")
+    print(tags)
+    print(post.tags)
+    print("++++++++++++++++++++++++++++++++")
 
     db.session.commit()
 
@@ -148,6 +177,7 @@ def delete_post(post_id):
 
     return redirect(f"/users/{user.id}")
 
+
 # ==============TAG ROUTES====================
 tag = Blueprint('tag', __name__)
 
@@ -156,6 +186,7 @@ tag = Blueprint('tag', __name__)
 def show_all_tags():
     """Lists all tags with links to each tag's detail page"""
     tags = Tag.query.all()
+    print(tags)
 
     return render_template("/tags/alltags.html", tags=tags)
 
@@ -163,9 +194,10 @@ def show_all_tags():
 @tag.route("/tags/<int:tag_id>")
 def show_tag_details(tag_id):
     """Show tag's detail page"""
-    tag = Tag.query.get(tag_id)
+    tag = Tag.query.get_or_404(tag_id)
     tagged_posts = tag.posts
-
+    print(f"Tag: {tag}")
+    print(f"Tagged posts: {tagged_posts}")
     return render_template("/tags/details.html", tag=tag, tagged_posts=tagged_posts)
 
 
@@ -213,5 +245,3 @@ def delete_tag(tag_id):
 
     db.session.commit()
     return redirect("/tags")
-
-

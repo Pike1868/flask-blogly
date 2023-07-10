@@ -3,10 +3,11 @@
 {% block title %}Blogly Tags{% endblock %}
 
 {% block content %}
-<h1 class="my-3">All tags</h1>
+<h1 class="my-3">All Tags</h1>
 <ul class="container-sm">
     {% for tag in tags %}
-    <li class=" my-3"> <a href="/tags/{{tag.id}}">{{tag.name}}</a>
+    <li class=" my-3">
+        <a href="/tags/{{tag.id}}">{{tag.name}}</a>
     </li>
     {% endfor %}
 </ul>
