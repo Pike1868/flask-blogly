@@ -22,7 +22,13 @@
                 </a>
             </div>
         </nav>
-
+        <div>
+            {% for msg in get_flashed_messages() %}
+            <p>
+                {{msg}}
+            </p>
+            {% endfor %}
+        </div>
         <div id="content-wrap" class="container my-3">
             {% block content %}
             {% endblock %}

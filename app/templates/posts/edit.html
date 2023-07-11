@@ -4,12 +4,13 @@
 <h1>Edit Post</h1>
 <form action="/posts/{{post.id}}/edit" method="POST">
     <div class="form-group mb-3">
-        <label for="post_title_input">Title</label>
-        <input type="text" name="post_title" id="post_title_input" class="form-control" value="{{post.title}}" required>
-    </div>
-    <div class="form-group mb-3">
-        <label for="post_content_input">Content</label>
-        <textarea name="post_content" id="post_content_input" class="form-control" required>{{post.content}}</textarea>
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>
+            {{field.label}}
+            {{field}}
+        </p>
+        {% endfor %}
     </div>
     <div class="my-4">
         <h4 class="text-muted">Tagged:</h4>
@@ -20,7 +21,7 @@
 
         </ul>
     </div>
-    <div class="d-flex justify-content-between">
+    <div>
         <a href="/users/{{user.id}}" class="btn btn-secondary bg-warning text-dark">Cancel</a>
         <button type="submit" class="btn btn-primary bg-success">Edit</button>
     </div>

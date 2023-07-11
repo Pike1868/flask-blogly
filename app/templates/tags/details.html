@@ -5,6 +5,7 @@
 {% block content %}
 <div class="container">
     <h2 class="my-3">{{ tag.name }}</h2>
+    <p>Tagged Posts:</p>
     <ul>
         {% if tagged_posts %}
         <!-- Display posts associated with the tag -->
@@ -20,7 +21,7 @@
     </ul>
     <div class="tag_btn_group">
         <form action="/tags/{{tag.id}}/edit">
-            <button type="submit" class="btn btn-success">Edit</button>
+            <button type="submit" class="btn btn-success my-3">Edit</button>
         </form>
         <form action="/tags/{{tag.id}}/delete" method="POST">
             <button type="submit" class="btn btn-danger">Delete</button>

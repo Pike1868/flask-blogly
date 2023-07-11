@@ -1,11 +1,5 @@
-blinker
-cffi
-click
-Flask-DebugToolbar
-Flask-SQLAlchemy
-itsdangerous
-Jinja2
-MarkupSafe
-psycopg2
-SQLAlchemy
-Werkzeug
+Flask==2.3.2
+Flask==2.0.1
+Flask_DebugToolbar==0.13.1
+flask_sqlalchemy==3.0.5
+SQLAlchemy==2.0.17
